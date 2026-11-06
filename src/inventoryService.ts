@@ -36,7 +36,7 @@ class InventoryRepository {
     return this.products;
   }
 
-  // Método de negocio con validación estricta y manejo de excepciones (Nuevo)
+  // Método de negocio con validación estricta y manejo de excepciones
   public processStockCheckout(productId: number, quantityToSubtract: number): Product {
     const product = this.products.find(p => p.id === productId);
 
@@ -53,6 +53,11 @@ class InventoryRepository {
     // Si pasa las validaciones, descontamos el stock
     product.stock -= quantityToSubtract;
     return product;
+  }
+
+  // Método de filtrado por categoría (Simulando una consulta con parámetros)
+  public getProductsByCategory(categoryName: string): Product[] {
+    return this.products.filter(p => p.category.toLowerCase() === categoryName.toLowerCase());
   }
 }
 
