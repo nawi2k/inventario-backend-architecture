@@ -40,24 +40,34 @@ class InventoryRepository {
   public processStockCheckout(productId: number, quantityToSubtract: number): Product {
     const product = this.products.find(p => p.id === productId);
 
-    // 1. Validación de existencia (Simulando un NotFoundException de Java)
     if (!product) {
       throw new Error(`Error crítico: El producto con ID ${productId} no se encuentra registrado en el sistema.`);
     }
 
-    // 2. Validación de regla de negocio (Stock insuficiente)
     if (product.stock < quantityToSubtract) {
       throw new Error(`Operación rechazada: Stock insuficiente para '${product.name}'. Stock actual: ${product.stock}, solicitado: ${quantityToSubtract}.`);
     }
 
-    // Si pasa las validaciones, descontamos el stock
     product.stock -= quantityToSubtract;
     return product;
   }
 
-  // Método de filtrado por categoría (Simulando una consulta con parámetros)
+  // Método de filtrado por categoría
   public getProductsByCategory(categoryName: string): Product[] {
     return this.products.filter(p => p.category.toLowerCase() === categoryName.toLowerCase());
+  }
+
+  // Método para registrar un nuevo producto (Nuevo)
+  public addProduct(newProductData: Omit<Product, 'id'>): Product {
+    const newId = this.products.length > 0 ? Math.max(...this.products.map(p => p.id)) + 1 : 1;
+    
+    const productToAdd: Product = {
+      id: newId,
+      ...newProductData
+    };
+
+    this.products.push(productToAdd);
+    return productToAdd;
   }
 }
 
