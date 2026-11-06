@@ -57,7 +57,7 @@ class InventoryRepository {
     return this.products.filter(p => p.category.toLowerCase() === categoryName.toLowerCase());
   }
 
-  // Método para registrar un nuevo producto (Nuevo)
+  // Método para registrar un nuevo producto
   public addProduct(newProductData: Omit<Product, 'id'>): Product {
     const newId = this.products.length > 0 ? Math.max(...this.products.map(p => p.id)) + 1 : 1;
     
@@ -68,6 +68,18 @@ class InventoryRepository {
 
     this.products.push(productToAdd);
     return productToAdd;
+  }
+
+  // Método para eliminar un producto por ID (Nuevo)
+  public deleteProduct(id: number): Product {
+    const index = this.products.findIndex(p => p.id === id);
+
+    if (index === -1) {
+      throw new Error(`Error crítico: No se pudo eliminar. El producto con ID ${id} no existe en el sistema.`);
+    }
+
+    const deletedProduct = this.products.splice(index, 1)[0];
+    return deletedProduct;
   }
 }
 
